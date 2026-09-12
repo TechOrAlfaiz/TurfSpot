@@ -1,125 +1,152 @@
-# TurfSpot
+# 🏟️ TurfSpot — Modern Sports Turf Booking Platform
 
-TurfSpot is a comprehensive turf booking application with three modules: Admin, Owner, and User. This app allows users to view and book turf grounds, owners to manage their turfs and bookings, and admins to oversee all activities within the platform.
+[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](https://opensource.org/licenses/MIT)
+[![MapLibre GL JS](https://img.shields.io/badge/Maps-MapLibre%20%2B%20OpenFreeMap-06b6d4.svg)](https://openfreemap.org)
+[![MongoDB](https://img.shields.io/badge/Database-MongoDB%20Atlas-10b981.svg)](https://www.mongodb.com/)
+[![Vite](https://img.shields.io/badge/Frontend-Vite%20%2B%20React-6366f1.svg)](https://vitejs.dev/)
 
-## Features
-
-### User Module
-
-- **Browse Turfs**: Users can view various turfs, check their details, and select time slots for booking.
-- **Slot Booking**: Purchase time slots using Razorpay. After booking, users receive a confirmation email with all the booking details, including price, turf name, start time, end time, and a QR code containing all these details.
-- **Rate Turfs**: Users can provide ratings for the turfs they have booked.
-- **Become Owner**: Users can apply to become turf owners by filling out a form. Admins will review the application and send an approval or rejection email accordingly.
-
-### Owner Module
-
-- **Turf Management**: Owners can add new turfs, manage their existing turfs, and view all related booking details.
-- **Dashboard**: Owners have access to a dashboard where they can view transactions and booking statistics in a graphical format.
-- **Review Management**: Owners can view and manage reviews left by users for their turfs.
-
-### Admin Module
-
-- **Owner Requests**: Admins can approve or reject requests from users who wish to become owners. If approved, the user will receive an email with a registration link to the owner section.
-- **User and Owner Management**: Admins can view all users and owners registered on the platform.
-- **Turf Management**: Admins can view all turfs listed by owners and manage them as necessary.
-- **Transaction Overview**: Admins have access to all transactions on the platform and can view transaction data on a monthly basis in graph format.
+TurfSpot is a full-stack, production-grade sports turf booking and arena management platform designed for **Cricket** 🏏 and **Football** ⚽ enthusiasts. Built with a sleek sports-tech dark aesthetic, it features real-time slot reservations, native 2dsphere geospatial discovery, instant QR entry passes, and a completely free vector map solution powered by **MapLibre GL JS** and **OpenFreeMap**.
 
 ---
 
-## 🌐 URLs
+## 👨‍💻 Developer Details
 
-- **User App**: [https://turf-spot.vercel.app/](https://turf-spot.vercel.app/)
-- **Owner/Admin App**: [https://turf-spot-ao.vercel.app/](https://turf-spot-ao.vercel.app/)
-
-### 🔐 Admin Credentials (For Demo)
-
-- **Email**: `admin@gmail.com`  
-- **Password**: `mohdalfaiz.com`
-
-> 🛠️ **Note**: Admin accounts are created directly in the database. The admin process involves adding an owner manually in the `owners` table and updating their `role` to `admin`.
+- **Author**: Mohd Alfaiz
+- **GitHub**: [@TechOrAlfaiz](https://github.com/TechOrAlfaiz)
+- **Repository**: [https://github.com/TechOrAlfaiz/TurfSpot](https://github.com/TechOrAlfaiz/TurfSpot)
+- **Email**: [mohdalfaiz1245@gmail.com](mailto:mohdalfaiz1245@gmail.com)
 
 ---
 
-## Technologies Used
+## 🌟 Core Highlights & Architecture
 
-- **Frontend**: React, Tailwind CSS, DaisyUI, Redux
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB
-- **Payments**: Razorpay
-- **Image Hosting**: Cloudinary
+### 🗺️ 100% Free Modern Map Stack (Zero Google Maps Cost)
+- **MapLibre GL JS & OpenFreeMap**: Smooth, hardware-accelerated vector map rendering using high-speed CDN vector tiles (`liberty` style).
+- **No Google API Key / Credit Card Required**: Completely avoids legacy Google Maps billing and quota restrictions.
+- **Geospatial Proximity**: Powered by MongoDB native `2dsphere` indexes (`$near` queries) with server-calculated Haversine distances.
+- **Interactive Pins & Popups**: Distinct sport badges (🏏 Cricket / ⚽ Football), live price labels, and glassmorphic quick-booking cards.
+- **Native Turn-by-Turn Navigation**: Direct "Get Directions" launcher connecting users seamlessly to their device's native GPS navigation.
 
+### ⚡ Smart Slot Reservation & Anti-Conflict Engine
+- **Atomic Slot Holds**: 10-minute temporary lock prevents race conditions and double-booking while payments are in flight.
+- **Dynamic Slot Generation**: Calculated automatically from each turf's operating hours (including late-night 2 AM slots) and past-hour filtering.
+- **Modular Payment Provider**:
+  - `development`: Isolated, secure `MockPaymentProvider` simulating complete payment lifecycles without real money.
+  - `production`: Direct `RazorpayPaymentProvider` with cryptographic HMAC-SHA256 signature verification and webhook idempotency.
 
+### 🎟️ Instant Match Confirmation & QR Gate Passes
+- Generates dynamic QR passes for confirmed bookings with match duration, sport type, and ground details.
+- Full booking history with quick status filtering (Upcoming, Completed, Cancelled).
+- Automatic cancellation and slot release rules with refund audit logging.
 
-## Installation
+---
 
-1. Clone the repository
-   ```bash
-   git clone https://github.com/TechOrAlfaiz/TurfSpot.git
-   ```
-2. Install dependencies for both client and server
-   ```bash
-   cd TurfSpot
-   npm install
-   cd server
-   npm install
-   cd ../client/owner
-   npm install
-   cd ../user
-   npm install
-   ```
-3. Create a `.env` file in the `server` directory and add the following environment variables:
+## 📂 Project Structure
 
-   ```env
-    PORT = your_port
-    MONGO_URI=your_mongo_uri
+```bash
+TurfSpot/
+├── client/
+│   ├── user/          # Player Hub (React + Vite + Tailwind + MapLibre)
+│   └── owner/         # Turf Owner & Admin Dashboard (Vite + React)
+├── server/            # REST API (Express, Mongoose, Geospatial Engine)
+│   ├── config/        # Database & payment configuration
+│   ├── controllers/   # User, Owner, Admin controllers
+│   ├── models/        # Turf, Booking, User, TimeSlot, Payment schemas
+│   ├── routes/        # Modular API routes
+│   └── services/      # Payment providers (Mock & Razorpay)
+└── .gitignore         # Comprehensive rules protecting all .env and secrets
+```
 
-    CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-    CLOUDINARY_API_KEY=your_cloudinary_api_key
-    CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+---
 
-    OWNER_URL = your_owner_url
-    USER_URL = your_user_url
+## 🚀 Quick Start (Local Setup)
 
-    EMAIL = your_email for sending emails
-    PASSWORD = your_password for sending emails(you will get from app password in google account)
+### 1. Clone the Repository
+```bash
+git clone https://github.com/TechOrAlfaiz/TurfSpot.git
+cd TurfSpot
+```
 
-    RAZORPAY_KEY_ID = your_razorpay_key_id
-    RAZORPAY_SECRET_KEY = your_razorpay_secret_key
-   
-    JWT_SECRET = your_jwt_secret
+### 2. Install Dependencies
+```bash
+# Install Server dependencies
+cd server
+npm install
 
+# Install User Client dependencies
+cd ../client/user
+npm install
 
-   ```
+# Install Owner Client dependencies
+cd ../owner
+npm install
+```
 
-4. Run the application
+### 3. Environment Variables Configuration
 
-   ```bash
-   # To run the backend
-   cd server
-   npm run server
+#### Backend (`server/.env`)
+Create `server/.env` based on `server/.env.example`:
+```env
+PORT=1234
+NODE_ENV=development
+PAYMENT_PROVIDER=mock          # Use 'mock' for local dev, 'razorpay' for live
+PAYMENT_HOLD_MINUTES=10
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
 
-   # To run the owner client
-   cd ../client/owner
-   npm run dev
+# Optional Razorpay credentials (only if PAYMENT_PROVIDER=razorpay)
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+```
 
-   # To run the user client
-   cd ../user
-   npm run dev
-   ```
+#### User Client (`client/user/.env`)
+Create `client/user/.env` based on `client/user/.env.example`:
+```env
+VITE_API_BASE_URL=http://localhost:1234
+# Free OpenFreeMap Vector Tile Style (Zero API key needed)
+VITE_OPENFREEMAP_STYLE_URL=https://tiles.openfreemap.org/styles/liberty
+```
 
-## Contributing
+### 4. Run Locally
 
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'Add some feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Create a new Pull Request
+Open three terminal windows (or run concurrently):
 
-## License
+```bash
+# Terminal 1: Backend Server (runs on http://localhost:1234)
+cd server
+npm start
 
-This project is licensed under the MIT License.
+# Terminal 2: Player User Hub (runs on http://localhost:5173)
+cd client/user
+npm run dev
 
-## Contact
+# Terminal 3: Owner / Admin Dashboard (runs on http://localhost:5174)
+cd client/owner
+npm run dev
+```
 
-For any inquiries or questions, please contact us at [mohdalfaiz1245@gmail.com](mailto:mohdalfaiz1245@gmail.com).
+---
 
+## 🌐 Deployment Status
+
+> ℹ️ **Notice**: This project is currently running in active local development and testing mode. Cloud production deployment (Vercel / Render / Railway) is planned for upcoming milestones. Old placeholder demo URLs from legacy templates have been decommissioned.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 18, Vite, MapLibre GL JS, Tailwind CSS, DaisyUI, Redux Toolkit, Lucide Icons
+- **Backend**: Node.js, Express.js, Mongoose, Argon2, JWT
+- **Database**: MongoDB Atlas (with `2dsphere` geospatial indexing)
+- **Map Provider**: OpenFreeMap vector tiles (OpenStreetMap data)
+- **Payment Architecture**: Modular Provider Pattern (Dev Simulator & Razorpay)
+
+---
+
+## 📜 License & Contact
+
+This project is licensed under the [MIT License](LICENSE).
+
+For inquiries, collaborations, or feedback, reach out to **Mohd Alfaiz**:
+- 📧 Email: [mohdalfaiz1245@gmail.com](mailto:mohdalfaiz1245@gmail.com)
+- 🐙 GitHub: [@TechOrAlfaiz](https://github.com/TechOrAlfaiz)
