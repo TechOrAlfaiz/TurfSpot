@@ -33,8 +33,9 @@ const allowedOrigins = [
   "http://localhost:5174",
 ];
 
-if (process.env.CLIENT_ORIGIN) {
-  process.env.CLIENT_ORIGIN.split(",").forEach((o) => {
+const configuredOrigins = process.env.FRONTEND_URL || process.env.CLIENT_ORIGIN;
+if (configuredOrigins) {
+  configuredOrigins.split(",").forEach((o) => {
     const trimmed = o.trim();
     if (trimmed && !allowedOrigins.includes(trimmed)) {
       allowedOrigins.push(trimmed);
@@ -43,7 +44,7 @@ if (process.env.CLIENT_ORIGIN) {
 }
 
 // In development only, allow wildcard fallback if CLIENT_ORIGIN is not defined
-if (process.env.NODE_ENV !== "production" && !process.env.CLIENT_ORIGIN) {
+if (process.env.NODE_ENV !== "production" && !configuredOrigins) {
   allowedOrigins.push("*");
 }
 

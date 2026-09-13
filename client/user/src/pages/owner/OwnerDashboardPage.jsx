@@ -27,7 +27,7 @@ import {
   Trophy
 } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:1234/api";
+const API_BASE = (() => { const raw = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || "http://localhost:1234").replace(/\/+$/, ""); return raw.endsWith("/api") ? raw : `${raw}/api`; })();
 
 const OwnerDashboardPage = () => {
   const navigate = useNavigate();
