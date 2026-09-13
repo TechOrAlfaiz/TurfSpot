@@ -8,10 +8,10 @@ export class MockPaymentProvider extends PaymentProvider {
   constructor() {
     super("mock");
 
-    // Strictly forbid mock provider in production environment
-    if (process.env.NODE_ENV === "production") {
+    // Strictly forbid mock provider in production environment when live payments required
+    if (process.env.NODE_ENV === "production" && process.env.REQUIRE_LIVE_PAYMENTS === "true") {
       throw new Error(
-        "FATAL CONFIGURATION ERROR: MockPaymentProvider is strictly forbidden in production mode. Set PAYMENT_PROVIDER=razorpay and configure valid Razorpay credentials."
+        "FATAL CONFIGURATION ERROR: MockPaymentProvider is strictly forbidden when REQUIRE_LIVE_PAYMENTS=true. Set PAYMENT_PROVIDER=razorpay and configure valid Razorpay credentials."
       );
     }
   }

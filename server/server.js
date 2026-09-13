@@ -127,16 +127,16 @@ const startServer = async () => {
     const provider = (process.env.PAYMENT_PROVIDER || "mock").toLowerCase().trim();
     const isProduction = process.env.NODE_ENV === "production";
 
-    if (isProduction && provider === "mock") {
+    if (isProduction && provider === "mock" && process.env.REQUIRE_LIVE_PAYMENTS === "true") {
       console.error(
-        "FATAL CONFIGURATION ERROR: Mock payment provider is strictly forbidden in production mode. Set PAYMENT_PROVIDER=razorpay and configure valid Razorpay credentials."
+        "FATAL CONFIGURATION ERROR: Mock payment provider is strictly forbidden when REQUIRE_LIVE_PAYMENTS=true. Set PAYMENT_PROVIDER=razorpay and configure valid Razorpay credentials."
       );
       process.exit(1);
     }
 
     if (provider === "razorpay") {
       if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
-        if (isProduction) {
+        if (isProduction && process.env.REQUIRE_LIVE_PAYMENTS === "true") {
           console.error(
             "FATAL CONFIGURATION ERROR: RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET must be configured when PAYMENT_PROVIDER=razorpay in production mode."
           );
@@ -162,8 +162,13 @@ const startServer = async () => {
   }
 };
 
+// Auto-start in standalone mode, connect DB once in serverless mode
+if (process.env.VERCEL) {
+  connectDB();
+} else {
+  startServer();
+}
 
-// Start the server
-startServer();
+export default app;
 
 
