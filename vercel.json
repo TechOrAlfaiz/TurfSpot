@@ -1,0 +1,12 @@
+{
+  "buildCommand": "cd client/user && npm install && npm run build",
+  "outputDirectory": "client/user/dist",
+  "cleanUrls": true,
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
