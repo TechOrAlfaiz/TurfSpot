@@ -29,6 +29,9 @@ const useTurfData = (customParams = {}) => {
       let response;
       try {
         response = await axiosInstance.get(endpoint);
+        if (!response?.data?.turfs || response.data.turfs.length === 0) {
+          response = await axiosInstance.get("/api/user/turf/all");
+        }
       } catch (e) {
         // Fallback to all endpoint
         response = await axiosInstance.get("/api/user/turf/all");

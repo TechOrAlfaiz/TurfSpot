@@ -215,6 +215,11 @@ export const deleteOwnerRequest = async (req, res) => {
     ownerRequest.rejectionReason = reason;
     await ownerRequest.save();
 
+    // If a turf was previously associated, deactivate it so it does not show on public listings
+    if (ownerRequest.turfId) {
+      await Turf.findByIdAndUpdate(ownerRequest.turfId, { isActive: false });
+    }
+
     try {
       const to = ownerRequest.email;
       const subject = "Update regarding your TurfSpot Owner Request";

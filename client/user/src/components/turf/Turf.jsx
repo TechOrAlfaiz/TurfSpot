@@ -22,19 +22,21 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 
+const CATALOG_PARAMS = { radius: 0 };
+
 const Turf = () => {
-  const { turfs, loading, error } = useTurfData();
+  const { turfs, loading, error } = useTurfData(CATALOG_PARAMS);
   const {
-    location: userLocality,
-    selectedLocality,
-    radiusKm,
-    setRadiusKm,
-    coords: userCoords,
-    isGpsActive,
-    isModalOpen,
-    openLocationModal,
-    closeLocationModal,
+    areaName: userLocality,
+    lat,
+    lng,
+    isGPS: isGpsActive,
   } = useUserLocation();
+  const userCoords = lat && lng ? [lat, lng] : null;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openLocationModal = () => setIsModalOpen(true);
+  const closeLocationModal = () => setIsModalOpen(false);
 
   // Multi-facet filter states
   const [searchTerm, setSearchTerm] = useState("");
