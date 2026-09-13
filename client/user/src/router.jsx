@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Root from "./layouts/Root";
 import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
@@ -10,8 +10,38 @@ import ProtectedLayout from "./layouts/ProtectedLayout";
 import Reservation from "./components/Reservation";
 import TurfBookingHistory from "./components/turf/TurfBookingHistory";
 import NotFound from "./components/common/NotFound";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import OwnerDashboardPage from "./pages/owner/OwnerDashboardPage";
+import RoleRoute from "./components/common/RoleRoute";
 
 const router = createBrowserRouter([
+  // Legacy / Direct Admin Login Redirect to Unified Login
+  {
+    path: "/admin/login",
+    element: <Navigate to="/login" replace />,
+  },
+  {
+    path: "/admin/dashboard",
+    element: (
+      <RoleRoute requiredRole="admin">
+        <AdminDashboardPage />
+      </RoleRoute>
+    ),
+  },
+
+  // Legacy / Direct Owner Login Redirect to Unified Login
+  {
+    path: "/owner/login",
+    element: <Navigate to="/login" replace />,
+  },
+  {
+    path: "/owner/dashboard",
+    element: (
+      <RoleRoute requiredRole="owner">
+        <OwnerDashboardPage />
+      </RoleRoute>
+    ),
+  },
   {
     path: "/",
     element: <Root />,

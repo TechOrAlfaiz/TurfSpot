@@ -3,60 +3,60 @@ import { Sparkles, Trophy, Flame } from "lucide-react";
 
 const MARQUEE_ITEMS = [
   {
-    image: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=800&q=80",
+    image: "/turfs/turf-1.jpg",
     title: "Box Cricket Under The Lights",
     tag: "🏏 Cricket",
-    location: "Malviya Nagar, Jaipur",
+    location: "Mansarovar, Jaipur",
     badge: "500 Lux LEDs"
   },
   {
-    image: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=800&q=80",
+    image: "/turfs/turf-2.jpg",
     title: "FIFA Monofilament Turf",
     tag: "⚽ Football",
-    location: "Mansarovar, Jaipur",
+    location: "Vaishali Nagar, Jaipur",
     badge: "Tournament Grade"
   },
   {
-    image: "https://images.unsplash.com/photo-1531415074868-036b1c57e329?auto=format&fit=crop&w=800&q=80",
+    image: "/turfs/turf-3.jpg",
     title: "Night Practice Nets",
     tag: "🏏 Cricket",
-    location: "Vaishali Nagar, Jaipur",
+    location: "Malviya Nagar, Jaipur",
     badge: "Bowling Machine"
   },
   {
-    image: "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=800&q=80",
+    image: "/turfs/turf-4.jpg",
     title: "7v7 Competitive Futsal",
     tag: "⚽ Football",
-    location: "C-Scheme, Jaipur",
+    location: "Jagatpura, Jaipur",
     badge: "Match Ready"
   },
   {
-    image: "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=800&q=80",
-    title: "Midnight Derby Matches",
-    tag: "⚽ Football",
-    location: "Tonk Road, Jaipur",
-    badge: "Open 24/7"
-  },
-  {
-    image: "https://images.unsplash.com/photo-1562077772-3ab1218688c0?auto=format&fit=crop&w=800&q=80",
-    title: "Championship Box Turf",
+    image: "/turfs/turf-5.jpg",
+    title: "Pink City Box League",
     tag: "🏏 Cricket",
-    location: "Jagatpura, Jaipur",
+    location: "Raja Park, Jaipur",
     badge: "High Safety Nets"
   },
   {
-    image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=800&q=80",
-    title: "Late Night Floodlit Pitch",
-    tag: "⚽ Football",
-    location: "Durgapura, Jaipur",
+    image: "/turfs/turf-6.jpg",
+    title: "Apex Executive Sports Club",
+    tag: "⚡ Boutique Club",
+    location: "C-Scheme, Jaipur",
+    badge: "Hybrid Arena"
+  },
+  {
+    image: "/turfs/turf-7.jpg",
+    title: "Championship Derby Pitch",
+    tag: "🏏⚽ Multi-Sport",
+    location: "Pratap Nagar, Jaipur",
     badge: "Zero-Shadow"
   },
   {
-    image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80",
-    title: "Weekend Cricket Knockouts",
-    tag: "🏏 Cricket",
-    location: "Raja Park, Jaipur",
-    badge: "Dual Pitch"
+    image: "/turfs/turf-8.jpg",
+    title: "Late Night Floodlit Stadium",
+    tag: "⚽ Football",
+    location: "Tonk Road, Jaipur",
+    badge: "Open 24/7"
   }
 ];
 
@@ -90,7 +90,7 @@ const SportsImageMarquee = () => {
         <div className="animate-marquee-infinite flex gap-5 py-2">
           {displayItems.map((item, index) => (
             <div
-              key={index}
+              key={`marquee-item-${index}`}
               className="w-72 sm:w-80 h-52 sm:h-56 shrink-0 rounded-2xl overflow-hidden glass-panel border border-white/10 hover:border-emerald-500/40 relative group/card transition-all duration-300 hover:-translate-y-1.5 shadow-xl hover:shadow-emerald-500/15"
             >
               <img
@@ -98,6 +98,10 @@ const SportsImageMarquee = () => {
                 alt={item.title}
                 className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500 ease-out"
                 loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/banner-1.png";
+                }}
               />
               
               {/* Dark Gradient Overlay */}

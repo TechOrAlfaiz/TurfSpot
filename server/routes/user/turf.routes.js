@@ -14,6 +14,7 @@ const turfRouter = Router();
 turfRouter.get("/nearby", getNearbyTurfs);
 turfRouter.get("/search", getNearbyTurfs);
 turfRouter.get("/all", getAllTurfs);
+turfRouter.get("/", getAllTurfs);
 
 // Timeslot queries via query parameters
 turfRouter.get("/timeSlot", getTimeSlotByTurfId);

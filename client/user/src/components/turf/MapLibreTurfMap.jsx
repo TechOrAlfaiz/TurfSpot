@@ -1,9 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
+import maplibreglWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import "maplibre-gl/dist/maplibre-gl.css";
 import axiosInstance from "../../hooks/useAxiosInstance";
 import { Navigation, MapPin, AlertCircle, Compass, ExternalLink, LocateFixed } from "lucide-react";
 import useUserLocation from "../../hooks/useUserLocation";
+
+// Ensure MapLibre Web Worker is resolved correctly in Vite (prevents 404 in .vite/deps)
+if (typeof maplibregl.setWorkerUrl === "function") {
+  maplibregl.setWorkerUrl(maplibreglWorkerUrl);
+}
 
 const OPENFREEMAP_STYLE =
   import.meta.env.VITE_OPENFREEMAP_STYLE_URL ||
@@ -19,6 +25,7 @@ const MapLibreTurfMap = ({ turf }) => {
   const [straightDistance, setStraightDistance] = useState(null);
   const [distLoading, setDistLoading] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapError, setMapError] = useState(false);
 
   // Extract turf coordinates: GeoJSON [longitude, latitude]
   const turfCoords =
@@ -64,9 +71,25 @@ const MapLibreTurfMap = ({ turf }) => {
       map.resize();
     });
 
+    map.on("error", (e) => {
+      if (e?.error?.message?.includes("style")) {
+        setMapError(true);
+      }
+    });
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (mapRef.current) {
+        mapRef.current.resize();
+      }
+    });
+    if (mapContainerRef.current) {
+      resizeObserver.observe(mapContainerRef.current);
+    }
+
     mapRef.current = map;
 
     return () => {
+      resizeObserver.disconnect();
       if (turfMarkerRef.current) {
         turfMarkerRef.current.remove();
         turfMarkerRef.current = null;
@@ -239,6 +262,15 @@ const MapLibreTurfMap = ({ turf }) => {
       {/* MapLibre Container */}
       <div className="relative h-[360px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl z-0">
         <div ref={mapContainerRef} className="w-full h-full" />
+        {mapError && (
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md p-6 text-center">
+            <AlertCircle className="w-10 h-10 text-amber-400 mb-2" />
+            <h4 className="text-white font-bold text-sm">Interactive Map Unavailable</h4>
+            <p className="text-slate-400 text-xs max-w-xs mt-1">
+              Tile provider unreachable. Use the "Get Directions" button above to navigate to the venue.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

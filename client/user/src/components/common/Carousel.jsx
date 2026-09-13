@@ -1,24 +1,92 @@
-import { useState } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
-const Carousel = ({slides}) => {
+// Configurable autoplay interval (increased rate to 2.5 seconds)
+export const AUTOPLAY_INTERVAL_MS = 2500;
+
+const Carousel = ({ slides = [] }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isTabVisible, setIsTabVisible] = useState(
+    typeof document !== "undefined" ? !document.hidden : true
+  );
 
+  const timerRef = useRef(null);
+  const totalSlides = slides.length;
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  // Existing slide-change logic reusing modulo indexing
+  const nextSlide = useCallback(() => {
+    if (totalSlides === 0) return;
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  }, [totalSlides]);
+
+  const prevSlide = useCallback(() => {
+    if (totalSlides === 0) return;
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  }, [totalSlides]);
+
+  // Reset / restart autoplay timer from current moment
+  const resetAutoplayTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    if (!isPaused && isTabVisible && totalSlides > 1) {
+      timerRef.current = setInterval(() => {
+        nextSlide();
+      }, AUTOPLAY_INTERVAL_MS);
+    }
+  }, [isPaused, isTabVisible, totalSlides, nextSlide]);
+
+  // Autoplay management effect
+  useEffect(() => {
+    resetAutoplayTimer();
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [resetAutoplayTimer]);
+
+  // Page Visibility API: pause when tab is inactive, resume when active
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsTabVisible(!document.hidden);
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  // Manual navigation handlers
+  const handleManualPrev = () => {
+    prevSlide();
+    resetAutoplayTimer();
   };
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const handleManualNext = () => {
+    nextSlide();
+    resetAutoplayTimer();
   };
 
   return (
-    <div className="relative w-full h-[400px] overflow-hidden">
+    <div
+      className="relative w-full h-[400px] overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
+      onTouchCancel={() => setIsPaused(false)}
+    >
       {slides.map((slide, index) => (
         <div
           key={index}
           className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ease-in-out ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
+            index === currentSlide
+              ? "opacity-100 z-10"
+              : "opacity-0 z-0 pointer-events-none"
           }`}
         >
           <img
@@ -28,17 +96,25 @@ const Carousel = ({slides}) => {
           />
         </div>
       ))}
-      <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-        <button onClick={prevSlide} className="btn btn-circle">
+      {/* Left/Right arrows made invisible per user request */}
+      <div className="hidden">
+        <button
+          onClick={handleManualPrev}
+          className="btn btn-circle"
+          aria-label="Previous slide"
+        >
           ❮
         </button>
-        <button onClick={nextSlide} className="btn btn-circle">
+        <button
+          onClick={handleManualNext}
+          className="btn btn-circle"
+          aria-label="Next slide"
+        >
           ❯
         </button>
       </div>
     </div>
   );
 };
-
 
 export default Carousel;

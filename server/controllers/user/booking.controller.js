@@ -292,11 +292,9 @@ export const verifyPayment = async (req, res) => {
       });
     }
 
-    const formattedStartTime = startTime ? format(parseISO(startTime), "hh:mm a") : "06:00 AM";
-    const formattedEndTime = endTime ? format(parseISO(endTime), "hh:mm a") : "07:00 AM";
-    const formattedDate = selectedTurfDate
-      ? format(parseISO(selectedTurfDate), "d MMM yyyy")
-      : format(new Date(), "d MMM yyyy");
+    const formattedStartTime = format(adjustedStartTime, "hh:mm a");
+    const formattedEndTime = format(adjustedEndTime, "hh:mm a");
+    const formattedDate = format(adjustedStartTime, "d MMM yyyy");
 
     // 3. Fetch User and Turf safely
     const [user, turf] = await Promise.all([

@@ -19,7 +19,9 @@ export const validateLoginInput = [
 ];
 
 export const validateOwnerRequestInput = [
-  body("name").notEmpty().withMessage("Name is required"),
+  body("name").notEmpty().withMessage("Owner name is required"),
   body("email").isEmail().withMessage("Email is invalid"),
-  body("phone").isMobilePhone("en-IN").withMessage("Phone number is invalid"),
+  body("phone").notEmpty().withMessage("Phone number is required"),
+  body("turfName").notEmpty().withMessage("Turf name is required"),
+  body("address").notEmpty().withMessage("Turf address is required"),
 ];

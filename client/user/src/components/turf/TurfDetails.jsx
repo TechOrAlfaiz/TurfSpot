@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useTurfData from "../../hooks/useTurfData";
@@ -22,7 +22,7 @@ import {
   Users,
   Compass,
 } from "lucide-react";
-import { calculateClientHaversineDistance, formatDistance } from "../../data/jaipurTurfs";
+import { calculateClientHaversineDistance, formatDistance, JAIPUR_TURFS } from "../../data/jaipurTurfs";
 
 const TurfDetails = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -32,11 +32,13 @@ const TurfDetails = () => {
   const { averageRating } = useReviews(id);
   const { coords: userCoords } = useUserLocation();
 
+  const [selectedImage, setSelectedImage] = useState(null);
+
   if (loading) {
     return <TurfDetailsSkeleton />;
   }
 
-  const turf = turfs.find((t) => t._id === id);
+  const turf = turfs.find((t) => t._id === id) || JAIPUR_TURFS.find((t) => t._id === id);
 
   if (!turf) {
     return (
@@ -50,6 +52,12 @@ const TurfDetails = () => {
       </div>
     );
   }
+
+  const currentMainImage = selectedImage || turf.image || "/banner-1.png";
+  const galleryImages =
+    turf.images && turf.images.length > 0
+      ? turf.images
+      : [currentMainImage];
 
   // Calculate distance
   const turfCoords = Array.isArray(turf.location?.coordinates)
@@ -83,9 +91,13 @@ const TurfDetails = () => {
           <div className="lg:col-span-6 glass-panel p-3 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
             <div className="relative h-[440px] rounded-2xl overflow-hidden">
               <img
-                src={turf.image || "/banner-1.png"}
+                src={currentMainImage}
                 alt={turf.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-all duration-300"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/banner-1.png";
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/25 to-transparent"></div>
               
@@ -98,7 +110,7 @@ const TurfDetails = () => {
                 {distanceKm !== null && (
                   <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-500/20 backdrop-blur-md border border-blue-500/40 text-xs font-bold text-blue-300">
                     <Compass className="w-3.5 h-3.5" />
-                    <span>{formatDistance(distanceKm)} away</span>
+                    <span>{formatDistance(distanceKm)}</span>
                   </div>
                 )}
               </div>
@@ -113,6 +125,34 @@ const TurfDetails = () => {
                 </div>
               </div>
             </div>
+
+            {/* Multi-Photo Gallery Thumbnails */}
+            {galleryImages.length > 1 && (
+              <div className="flex items-center gap-2.5 mt-3 px-1 overflow-x-auto pb-1">
+                {galleryImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setSelectedImage(img)}
+                    className={`relative h-16 w-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                      currentMainImage === img
+                        ? "border-emerald-400 scale-105 shadow-lg shadow-emerald-500/30"
+                        : "border-white/10 opacity-60 hover:opacity-100 hover:border-white/30"
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt={`${turf.name} angle ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/banner-1.png";
+                      }}
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right: Glass Information Box */}

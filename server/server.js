@@ -10,6 +10,10 @@ dotenv.config();
 
 const app = express();
 
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
 // Security HTTP headers
 app.use(
   helmet({
@@ -21,16 +25,36 @@ app.use(
 // General rate limiting across all API routes
 app.use("/api", generalLimiter);
 
-// Enhanced CORS configuration
+// Enhanced Production-Grade CORS configuration
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:3000",
+  "http://localhost:5174",
+];
+
+if (process.env.CLIENT_ORIGIN) {
+  process.env.CLIENT_ORIGIN.split(",").forEach((o) => {
+    const trimmed = o.trim();
+    if (trimmed && !allowedOrigins.includes(trimmed)) {
+      allowedOrigins.push(trimmed);
+    }
+  });
+}
+
+// In development only, allow wildcard fallback if CLIENT_ORIGIN is not defined
+if (process.env.NODE_ENV !== "production" && !process.env.CLIENT_ORIGIN) {
+  allowedOrigins.push("*");
+}
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://127.0.0.1:5173",
-      "http://localhost:3000",
-      "http://localhost:5174",
-      process.env.CLIENT_ORIGIN || "*",
-    ],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS policy does not allow access from origin: ${origin}`));
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "x-razorpay-signature"],
     credentials: true,
@@ -39,6 +63,7 @@ app.use(
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(express.static("public"));
 
 // Health check endpoint
 app.get("/health", (req, res) => {

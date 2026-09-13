@@ -17,8 +17,10 @@ bookingRouter.post("/create-order", verifyUserToken, createOrder);
 bookingRouter.post("/verify-payment", verifyUserToken, verifyPayment);
 bookingRouter.post("/cancel-hold", verifyUserToken, cancelSlotHold);
 bookingRouter.get("/get-bookings", verifyUserToken, getBookings);
+bookingRouter.get("/my-bookings", verifyUserToken, getBookings);
 bookingRouter.get("/", verifyUserToken, getBookings);
 bookingRouter.post("/:id/cancel", verifyUserToken, cancelBooking);
+bookingRouter.patch("/:id/cancel", verifyUserToken, cancelBooking);
 bookingRouter.delete("/:id/cancel", verifyUserToken, cancelBooking);
 bookingRouter.post("/webhook", handleRazorpayWebhook);
 

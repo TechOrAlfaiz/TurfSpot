@@ -9,13 +9,20 @@ import {
   validateLoginInput,
   validateOwnerRequestInput,
 } from "../../middleware/validators/owner/authValidator.js";
+import upload from "../../middleware/uploads/upload.middleware.js";
 
 const authRouter = Router();
-authRouter.post("/register",validateRegisterInput,  registerOwner);
-authRouter.post("/login",validateLoginInput, loginOwner);
-authRouter.post("/ownerRequest",validateOwnerRequestInput, ownerRequest);
+authRouter.post("/register", validateRegisterInput, registerOwner);
+authRouter.post("/login", validateLoginInput, loginOwner);
+authRouter.post(
+  "/ownerRequest",
+  upload.array("photos", 10),
+  validateOwnerRequestInput,
+  ownerRequest
+);
 
 export default authRouter;
+
 
 
 

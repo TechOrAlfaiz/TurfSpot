@@ -40,11 +40,38 @@ const useLoginForm = () => {
       const response = await axiosInstance.post("/api/user/auth/login", data);
       const result = response.data;
       toast.success(result.message || "Login successful!");
-      dispatch(login(result.token));
-      axiosInstance.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${result.token}`;
-      navigate("/auth", { replace: true });
+
+      const role = result.role || (result.user && result.user.role) || "user";
+
+      if (role === "admin") {
+        localStorage.removeItem("ownerToken");
+        localStorage.removeItem("ownerRole");
+        localStorage.setItem("adminToken", result.token);
+        localStorage.setItem("adminRole", "admin");
+        axiosInstance.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${result.token}`;
+        navigate("/admin/dashboard", { replace: true });
+      } else if (role === "owner") {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("adminRole");
+        localStorage.setItem("ownerToken", result.token);
+        localStorage.setItem("ownerRole", "owner");
+        axiosInstance.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${result.token}`;
+        navigate("/owner/dashboard", { replace: true });
+      } else {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("adminRole");
+        localStorage.removeItem("ownerToken");
+        localStorage.removeItem("ownerRole");
+        dispatch(login(result.token));
+        axiosInstance.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${result.token}`;
+        navigate("/auth", { replace: true });
+      }
     } catch (error) {
       const errorMsg =
         error.customMessage ||

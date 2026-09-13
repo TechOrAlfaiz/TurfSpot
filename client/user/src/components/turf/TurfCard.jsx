@@ -39,7 +39,7 @@ const TurfCard = ({ turf, userCoords }) => {
       distanceKm = calculateClientHaversineDistance(userCoords[0], userCoords[1], turfCoords[0], turfCoords[1]);
     }
   }
-  const distanceBadge = distanceKm !== null ? formatDistance(distanceKm) + " away" : (turf.distanceString || null);
+  const distanceBadge = distanceKm !== null ? formatDistance(distanceKm) : (turf.distanceString || null);
 
 
   const quickSlots = turf.quickSlots || [
@@ -58,6 +58,10 @@ const TurfCard = ({ turf, userCoords }) => {
           alt={turf.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           loading="lazy"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/banner-1.png";
+          }}
         />
         
         {/* Soft Vignette Overlay for Crisp Typography */}

@@ -28,8 +28,14 @@ export const JAIPUR_TURFS = [
     lateNightAvailable: true,
     lateNightSlots: ["10:00 PM", "11:00 PM", "12:00 AM", "01:00 AM"],
     availableSlots: 6,
-    image: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=1000&q=80",
-    cricketImage: "https://images.unsplash.com/photo-1531415074868-036b1c57e329?auto=format&fit=crop&w=1000&q=80",
+    image: "/turfs/turf-1.jpg",
+    images: [
+      "/turfs/turf-1.jpg",
+      "/turfs/turf-5.jpg",
+      "/turfs/turf-7.jpg",
+      "/turfs/turf-3.jpg"
+    ],
+    cricketImage: "/turfs/turf-night-1.jpg",
     amenities: [
       "500 Lux Floodlights",
       "Cricket Bowling Machine",
@@ -59,7 +65,13 @@ export const JAIPUR_TURFS = [
     lateNightAvailable: true,
     lateNightSlots: ["09:00 PM", "10:00 PM", "11:00 PM", "12:00 AM"],
     availableSlots: 4,
-    image: "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=1000&q=80",
+    image: "/turfs/turf-2.jpg",
+    images: [
+      "/turfs/turf-2.jpg",
+      "/turfs/turf-4.jpg",
+      "/turfs/turf-8.jpg",
+      "/turfs/turf-6.jpg"
+    ],
     amenities: [
       "FIFA Standard Turf",
       "High-Lux Night Floodlights",
@@ -89,8 +101,14 @@ export const JAIPUR_TURFS = [
     lateNightAvailable: true,
     lateNightSlots: ["09:00 PM", "10:00 PM", "11:00 PM", "12:00 AM", "01:00 AM"],
     availableSlots: 7,
-    image: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1000&q=80",
-    cricketImage: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1000&q=80",
+    image: "/turfs/turf-3.jpg",
+    images: [
+      "/turfs/turf-3.jpg",
+      "/turfs/turf-1.jpg",
+      "/turfs/turf-5.jpg",
+      "/turfs/turf-9.jpg"
+    ],
+    cricketImage: "/turfs/turf-night-1.jpg",
     amenities: [
       "Cricket Bowling Machine (130 km/h)",
       "Boundary Net Enclosure",
@@ -120,7 +138,13 @@ export const JAIPUR_TURFS = [
     lateNightAvailable: true,
     lateNightSlots: ["10:00 PM", "11:00 PM", "12:00 AM"],
     availableSlots: 5,
-    image: "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1000&q=80",
+    image: "/turfs/turf-4.jpg",
+    images: [
+      "/turfs/turf-4.jpg",
+      "/turfs/turf-8.jpg",
+      "/turfs/turf-2.jpg",
+      "/turfs/turf-10.jpg"
+    ],
     amenities: [
       "Floodlights (Zero Shadow)",
       "Covered Dugout",
@@ -149,7 +173,13 @@ export const JAIPUR_TURFS = [
     lateNightAvailable: false,
     lateNightSlots: ["09:00 PM", "10:00 PM"],
     availableSlots: 3,
-    image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1000&q=80",
+    image: "/turfs/turf-5.jpg",
+    images: [
+      "/turfs/turf-5.jpg",
+      "/turfs/turf-7.jpg",
+      "/turfs/turf-1.jpg",
+      "/turfs/turf-9.jpg"
+    ],
     amenities: [
       "LED Arena Lighting",
       "High Safety Perimeter Nets",
@@ -178,7 +208,13 @@ export const JAIPUR_TURFS = [
     lateNightAvailable: true,
     lateNightSlots: ["10:00 PM", "11:00 PM", "12:00 AM"],
     availableSlots: 4,
-    image: "https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=1000&q=80",
+    image: "/turfs/turf-6.jpg",
+    images: [
+      "/turfs/turf-6.jpg",
+      "/turfs/turf-2.jpg",
+      "/turfs/turf-8.jpg",
+      "/turfs/turf-4.jpg"
+    ],
     amenities: [
       "Executive Player Lounge",
       "FIFA Grade Grass",
@@ -208,7 +244,13 @@ export const JAIPUR_TURFS = [
     lateNightAvailable: true,
     lateNightSlots: ["09:00 PM", "10:00 PM", "11:00 PM", "12:00 AM", "01:00 AM"],
     availableSlots: 8,
-    image: "https://images.unsplash.com/photo-1562077772-3ab1218688c0?auto=format&fit=crop&w=1000&q=80",
+    image: "/turfs/turf-7.jpg",
+    images: [
+      "/turfs/turf-7.jpg",
+      "/turfs/turf-5.jpg",
+      "/turfs/turf-3.jpg",
+      "/turfs/turf-1.jpg"
+    ],
     amenities: [
       "Night Floodlights",
       "Leather & Tennis Cricket Balls",
@@ -237,7 +279,13 @@ export const JAIPUR_TURFS = [
     lateNightAvailable: true,
     lateNightSlots: ["10:00 PM", "11:00 PM", "12:00 AM", "01:00 AM", "02:00 AM"],
     availableSlots: 9,
-    image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1000&q=80",
+    image: "/turfs/turf-8.jpg",
+    images: [
+      "/turfs/turf-8.jpg",
+      "/turfs/turf-4.jpg",
+      "/turfs/turf-2.jpg",
+      "/turfs/turf-10.jpg"
+    ],
     amenities: [
       "Open 24/7",
       "High-Lux Stadium Floodlights",
@@ -266,7 +314,13 @@ export const JAIPUR_TURFS = [
     lateNightAvailable: true,
     lateNightSlots: ["09:00 PM", "10:00 PM", "11:00 PM"],
     availableSlots: 4,
-    image: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1000&q=80",
+    image: "/turfs/turf-9.jpg",
+    images: [
+      "/turfs/turf-9.jpg",
+      "/turfs/turf-3.jpg",
+      "/turfs/turf-5.jpg",
+      "/turfs/turf-1.jpg"
+    ],
     amenities: [
       "Metro Station Accessibility",
       "Surround Safety Nets",
@@ -295,7 +349,13 @@ export const JAIPUR_TURFS = [
     lateNightAvailable: true,
     lateNightSlots: ["10:00 PM", "11:00 PM", "12:00 AM"],
     availableSlots: 5,
-    image: "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=1000&q=80",
+    image: "/turfs/turf-10.jpg",
+    images: [
+      "/turfs/turf-10.jpg",
+      "/turfs/turf-6.jpg",
+      "/turfs/turf-4.jpg",
+      "/turfs/turf-8.jpg"
+    ],
     amenities: [
       "Shadowless LED Lights",
       "Dugout with Coolers",
