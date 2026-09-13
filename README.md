@@ -1,43 +1,102 @@
-# 🏟️ TurfSpot — Modern Sports Turf Booking Platform
+# 🏟️ TurfSpot
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](https://opensource.org/licenses/MIT)
-[![MapLibre GL JS](https://img.shields.io/badge/Maps-MapLibre%20%2B%20OpenFreeMap-06b6d4.svg)](https://openfreemap.org)
-[![MongoDB](https://img.shields.io/badge/Database-MongoDB%20Atlas-10b981.svg)](https://www.mongodb.com/)
-[![Vite](https://img.shields.io/badge/Frontend-Vite%20%2B%20React-6366f1.svg)](https://vitejs.dev/)
+> **Next-Generation Sports Turf Booking & Arena Discovery Platform for Jaipur**
 
-TurfSpot is a full-stack, production-grade sports turf booking and arena management platform designed for **Cricket** 🏏 and **Football** ⚽ enthusiasts. Built with a sleek sports-tech dark aesthetic, it features real-time slot reservations, native 2dsphere geospatial discovery, instant QR entry passes, and a completely free vector map solution powered by **MapLibre GL JS** and **OpenFreeMap**.
-
----
-
-## 👨‍💻 Developer Details
-
-- **Author**: Mohd Alfaiz
-- **GitHub**: [@TechOrAlfaiz](https://github.com/TechOrAlfaiz)
-- **Repository**: [https://github.com/TechOrAlfaiz/TurfSpot](https://github.com/TechOrAlfaiz/TurfSpot)
-- **Email**: [mohdalfaiz1245@gmail.com](mailto:mohdalfaiz1245@gmail.com)
+[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5.3-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-4.19-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas%202dsphere-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![MapLibre](https://img.shields.io/badge/Maps-MapLibre%20GL-396B9C?style=for-the-badge&logo=maplibre&logoColor=white)](https://maplibre.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Razorpay](https://img.shields.io/badge/Payments-Razorpay%20%2B%20Mock-0C2340?style=for-the-badge&logo=razorpay&logoColor=white)](https://razorpay.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-10B981?style=for-the-badge)](LICENSE)
 
 ---
 
-## 🌟 Core Highlights & Architecture
+## 📌 Overview
 
-### 🗺️ 100% Free Modern Map Stack (Zero Google Maps Cost)
-- **MapLibre GL JS & OpenFreeMap**: Smooth, hardware-accelerated vector map rendering using high-speed CDN vector tiles (`liberty` style).
-- **No Google API Key / Credit Card Required**: Completely avoids legacy Google Maps billing and quota restrictions.
-- **Geospatial Proximity**: Powered by MongoDB native `2dsphere` indexes (`$near` queries) with server-calculated Haversine distances.
-- **Interactive Pins & Popups**: Distinct sport badges (🏏 Cricket / ⚽ Football), live price labels, and glassmorphic quick-booking cards.
-- **Native Turn-by-Turn Navigation**: Direct "Get Directions" launcher connecting users seamlessly to their device's native GPS navigation.
+**TurfSpot** is a full-stack, location-aware sports turf booking and arena discovery application tailored specifically for sports enthusiasts in **Jaipur**. Designed with a high-performance sports-tech dark aesthetic, TurfSpot enables players to discover nearby cricket grounds and football pitches, check real-time tonight availability, lock slots with atomic concurrency controls, and receive digital QR entry passes.
 
-### ⚡ Smart Slot Reservation & Anti-Conflict Engine
-- **Atomic Slot Holds**: 10-minute temporary lock prevents race conditions and double-booking while payments are in flight.
-- **Dynamic Slot Generation**: Calculated automatically from each turf's operating hours (including late-night 2 AM slots) and past-hour filtering.
-- **Modular Payment Provider**:
-  - `development`: Isolated, secure `MockPaymentProvider` simulating complete payment lifecycles without real money.
-  - `production`: Direct `RazorpayPaymentProvider` with cryptographic HMAC-SHA256 signature verification and webhook idempotency.
+The platform also includes a comprehensive multi-role management ecosystem: players discover and book grounds, verified turf owners manage live bookings and slot pricing, and super administrators inspect venue onboarding applications via interactive satellite coordinate reviews.
 
-### 🎟️ Instant Match Confirmation & QR Gate Passes
-- Generates dynamic QR passes for confirmed bookings with match duration, sport type, and ground details.
-- Full booking history with quick status filtering (Upcoming, Completed, Cancelled).
-- Automatic cancellation and slot release rules with refund audit logging.
+---
+
+## ✨ Key Features
+
+- **⚡ Real-Time Slot Reservation & Anti-Collision Holds**:
+  - Dynamically calculates available time slots based on operating hours (including late-night 2 AM sessions).
+  - Automatically locks slots with a temporary **10-minute atomic hold** while checkout is in progress, preventing double-booking race conditions.
+
+- **🗺️ Geolocation Discovery & 100% Free Vector Map**:
+  - Powered by **MapLibre GL JS** and high-speed **OpenFreeMap** vector street tiles (`liberty` style) with zero Google Maps API costs.
+  - Native MongoDB `2dsphere` spatial indexing calculates accurate Haversine driving distances from the user's active GPS or chosen Jaipur neighborhood.
+  - Interactive sport badges (🏏 Cricket, ⚽ Football), live hourly rates, and one-tap native GPS turn-by-turn directions.
+
+- **📍 Swappable External Venue Discovery Pins**:
+  - Sourced live via **OpenStreetMap Overpass API** (with zero-code switchover to **Google Places API** via environment variables).
+  - Features a server-side in-memory 24-hour spatial cache bucketed by rounded coordinates to prevent redundant network calls.
+  - Spatial deduplication suppresses external pins within 150m of active platform listings.
+  - Discovery pins are clearly marked with directions-only popups (no booking CTA) to maintain strict functional separation.
+
+- **💳 Modular Payment Engine**:
+  - **Development Mode**: Integrated `MockPaymentProvider` simulating end-to-end checkout, holds, confirmations, and failure flows without real money.
+  - **Production Mode**: Full `RazorpayPaymentProvider` support with cryptographic HMAC-SHA256 signature verification and webhook idempotency.
+
+- **📝 "Become Owner" Turf Onboarding Flow**:
+  - Self-service onboarding for turf managers capturing arena name, physical street address, sport types, pricing, and multi-photo uploads.
+  - Interactive **MapLibre Location Pin Picker** with GPS autofill allowing applicants to accurately pin exact ground coordinates.
+
+- **🛡️ Role-Based Portals (User / Owner / Admin)**:
+  - **Player Hub**: Location-aware discovery, neighborhood radius filters, late-night owl filters, match checkout, and digital QR gate passes.
+  - **Turf Owner Dashboard**: Unified role-authenticated portal to monitor live reservations, slot schedules, and revenue metrics.
+  - **Super Admin Governance**: Deep-slate management dashboard featuring a dedicated venue application review modal with embedded coordinate inspection and photo gallery verification.
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework**: React 18 with Vite
+- **State Management**: Redux Toolkit & Redux Persist
+- **Styling**: Vanilla CSS, Tailwind CSS (v3.4), DaisyUI (v4)
+- **Map & Geolocation**: MapLibre GL JS (`maplibre-gl`), Leaflet, OpenFreeMap Vector CDN
+- **Icons & UI**: Lucide React, GSAP animations
+
+### Backend
+- **Runtime**: Node.js (ES Modules)
+- **Framework**: Express.js
+- **Security & Headers**: Helmet, CORS, Express Rate Limit
+- **Authentication**: JSON Web Tokens (JWT), Argon2 password hashing
+- **Validation**: Express Validator
+- **Testing**: Node.js Native Test Runner (`node --test`)
+
+### Database & Storage
+- **Database**: MongoDB Atlas with native `2dsphere` geospatial indexing
+- **ODM**: Mongoose 8
+- **Local Dev Database**: Embedded `mongodb-memory-server` automatic fallback
+- **File & Media Storage**: Local `/public/turfs/` storage with Cloudinary support
+
+### Services & Gateways
+- **Vector Tile Provider**: OpenFreeMap (`https://tiles.openfreemap.org/styles/liberty`)
+- **External Discovery**: OpenStreetMap Overpass API / Google Places API
+- **Payments**: Razorpay Node SDK & Developer Mock Payment Simulator
+- **Entry Passes**: QRCode generator (`qrcode`)
+
+---
+
+## 📸 Screenshots & Demo
+
+<!-- TODO: Add live demo URL once deployed to production -->
+> ℹ️ *Live demonstration recording and deployment links will be placed here.*
+
+| Location-Aware Catalog Map & Discovery Pins | Enriched "Become Owner" Interactive Pin Picker |
+| :---: | :---: |
+| <!-- TODO: Insert Map Screenshot --> `client/user/src/components/turf/MapLibreCatalogMap.jsx` | <!-- TODO: Insert Become Owner Screenshot --> `client/user/src/features/becomeOwner/BecomeOwner.jsx` |
+
+| Redesigned High-Tech Admin Dashboard | Mobile-Optimized Turf Details & Slot Selection |
+| :---: | :---: |
+| <!-- TODO: Insert Admin Dashboard Screenshot --> `client/user/src/pages/admin/AdminDashboardPage.jsx` | <!-- TODO: Insert Turf Details Screenshot --> `client/user/src/components/turf/TurfDetails.jsx` |
 
 ---
 
@@ -46,20 +105,53 @@ TurfSpot is a full-stack, production-grade sports turf booking and arena managem
 ```bash
 TurfSpot/
 ├── client/
-│   ├── user/          # Player Hub (React + Vite + Tailwind + MapLibre)
-│   └── owner/         # Turf Owner & Admin Dashboard (Vite + React)
-├── server/            # REST API (Express, Mongoose, Geospatial Engine)
-│   ├── config/        # Database & payment configuration
-│   ├── controllers/   # User, Owner, Admin controllers
-│   ├── models/        # Turf, Booking, User, TimeSlot, Payment schemas
-│   ├── routes/        # Modular API routes
-│   └── services/      # Payment providers (Mock & Razorpay)
-└── .gitignore         # Comprehensive rules protecting all .env and secrets
+│   ├── user/                          # Main Unified Player & Dashboard Client (React + Vite)
+│   │   ├── public/
+│   │   │   └── turfs/                 # High-resolution venue sports photography
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   │   ├── common/            # Navbar, Footer, Carousel, RoleRoute
+│   │   │   │   ├── home/              # SportsImageMarquee (RTL auto-scroll)
+│   │   │   │   └── turf/              # MapLibreCatalogMap, TurfCard, LocationPickerMap
+│   │   │   ├── data/                  # Jaipur locality coordinates and seed definitions
+│   │   │   ├── features/              # BecomeOwner multi-step onboarding
+│   │   │   ├── hooks/                 # Custom React hooks (useTurfData, useUserLocation)
+│   │   │   ├── pages/
+│   │   │   │   ├── admin/             # AdminDashboardPage (Venue approval modal)
+│   │   │   │   ├── owner/             # OwnerDashboardPage (Revenue & slot management)
+│   │   │   │   └── auth/              # Unified Login and Registration
+│   │   │   └── redux/                 # Global state slices (auth, turf, theme)
+│   │   └── vite.config.js
+│   └── owner/                         # Standalone Owner Dashboard Client (Optional)
+├── server/                            # Backend REST API Server (Express + Mongoose)
+│   ├── config/                        # Database connection & memory server failover
+│   ├── controllers/
+│   │   ├── admin/                     # Request management & admin governance
+│   │   ├── owner/                     # Owner turf & booking operations
+│   │   └── user/                      # Booking lifecycle, turfs, and discovery
+│   ├── middleware/                    # JWT auth, role validation, rate limiting, uploads
+│   ├── models/                        # Turf, Booking, User, OwnerRequest, TimeSlot
+│   ├── routes/                        # Modular Express routing
+│   ├── services/
+│   │   ├── discovery/                 # Swappable OSM Overpass & Google Places service
+│   │   └── payment/                   # Mock & Razorpay payment providers
+│   ├── tests/                         # Production readiness automated test suite
+│   ├── server.js                      # Application entry point
+│   └── .env.example                   # Master backend environment template
+├── LICENSE                            # MIT License
+└── README.md                          # Project Documentation
 ```
 
 ---
 
-## 🚀 Quick Start (Local Setup)
+## 🚀 Getting Started
+
+### Prerequisites
+- **Node.js**: `v18.0.0` or higher (Node 20+ recommended)
+- **npm**: `v9.0.0` or higher
+- **MongoDB**: Local MongoDB daemon or free [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) cluster
+
+---
 
 ### 1. Clone the Repository
 ```bash
@@ -67,86 +159,150 @@ git clone https://github.com/TechOrAlfaiz/TurfSpot.git
 cd TurfSpot
 ```
 
+---
+
 ### 2. Install Dependencies
+
+#### Backend Server
 ```bash
-# Install Server dependencies
 cd server
 npm install
+```
 
-# Install User Client dependencies
+#### Frontend Client
+```bash
 cd ../client/user
 npm install
+```
 
-# Install Owner Client dependencies
+*(Optional standalone owner portal)*:
+```bash
 cd ../owner
 npm install
 ```
 
-### 3. Environment Variables Configuration
+---
+
+### 3. Configure Environment Variables
 
 #### Backend (`server/.env`)
-Create `server/.env` based on `server/.env.example`:
-```env
-PORT=1234
-NODE_ENV=development
-PAYMENT_PROVIDER=mock          # Use 'mock' for local dev, 'razorpay' for live
-PAYMENT_HOLD_MINUTES=10
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
+Copy the example configuration file in `server/`:
+```bash
+cd server
+cp .env.example .env
+```
+Fill in your database credentials and preferred settings (see [Environment Variables](#-environment-variables)).
 
-# Optional Razorpay credentials (only if PAYMENT_PROVIDER=razorpay)
-RAZORPAY_KEY_ID=
-RAZORPAY_KEY_SECRET=
+#### Frontend (`client/user/.env`)
+Create or edit `client/user/.env`:
+```bash
+cd client/user
+cp .env.example .env
 ```
 
-#### User Client (`client/user/.env`)
-Create `client/user/.env` based on `client/user/.env.example`:
-```env
-VITE_API_BASE_URL=http://localhost:1234
-# Free OpenFreeMap Vector Tile Style (Zero API key needed)
-VITE_OPENFREEMAP_STYLE_URL=https://tiles.openfreemap.org/styles/liberty
-```
+---
 
 ### 4. Run Locally
 
-Open three terminal windows (or run concurrently):
+Open two separate terminal windows:
 
+#### Terminal 1 — Backend API
 ```bash
-# Terminal 1: Backend Server (runs on http://localhost:1234)
 cd server
 npm start
+# Server starts on http://localhost:1234
+```
+*(You can also use `npm run dev` to run with node directly, or `npm run server` for nodemon).*
 
-# Terminal 2: Player User Hub (runs on http://localhost:5173)
+#### Terminal 2 — Frontend User Hub
+```bash
 cd client/user
 npm run dev
-
-# Terminal 3: Owner / Admin Dashboard (runs on http://localhost:5174)
-cd client/owner
-npm run dev
+# Vite dev server starts on http://localhost:5173
 ```
 
----
-
-## 🌐 Deployment Status
-
-> ℹ️ **Notice**: This project is currently running in active local development and testing mode. Cloud production deployment (Vercel / Render / Railway) is planned for upcoming milestones. Old placeholder demo URLs from legacy templates have been decommissioned.
+Visit **`http://localhost:5173`** in your browser to explore the platform.
 
 ---
 
-## 🛠️ Tech Stack
-
-- **Frontend**: React 18, Vite, MapLibre GL JS, Tailwind CSS, DaisyUI, Redux Toolkit, Lucide Icons
-- **Backend**: Node.js, Express.js, Mongoose, Argon2, JWT
-- **Database**: MongoDB Atlas (with `2dsphere` geospatial indexing)
-- **Map Provider**: OpenFreeMap vector tiles (OpenStreetMap data)
-- **Payment Architecture**: Modular Provider Pattern (Dev Simulator & Razorpay)
+### 5. Running Automated Tests
+Run the production readiness API verification test suite:
+```bash
+cd server
+npm test
+```
+*Validates 26 automated checks covering JWT authorization, Become Owner lifecycles, race condition prevention, and proximity calculations.*
 
 ---
 
-## 📜 License & Contact
+## ⚙️ Environment Variables
 
-This project is licensed under the [MIT License](LICENSE).
+### Backend (`server/.env`)
 
-For inquiries, collaborations, or feedback, reach out to **Mohd Alfaiz**:
-- 📧 Email: [mohdalfaiz1245@gmail.com](mailto:mohdalfaiz1245@gmail.com)
-- 🐙 GitHub: [@TechOrAlfaiz](https://github.com/TechOrAlfaiz)
+| Variable | Description | Default / Example | Required |
+| :--- | :--- | :--- | :---: |
+| `PORT` | HTTP port for the Express API server | `1234` | **Yes** |
+| `NODE_ENV` | Application environment (`development` / `production`) | `development` | **Yes** |
+| `CLIENT_ORIGIN` | Allowed CORS origins for the frontend client | `http://localhost:5173` | **Yes** |
+| `PAYMENT_PROVIDER` | Payment engine mode (`mock` for dev simulation, `razorpay` for live) | `mock` | **Yes** |
+| `PAYMENT_HOLD_MINUTES` | Minutes to hold a reserved slot before automatic expiration | `10` | **Yes** |
+| `MONGO_URI` | MongoDB Atlas or local connection string | `mongodb+srv://...` | **Yes** |
+| `JWT_SECRET` | Secret key for signing JSON Web Tokens | `64-char hex string` | **Yes** |
+| `ADMIN_EMAIL` | Super administrator email login | `admin@yourdomain.com` | **Yes** |
+| `ADMIN_PASSWORD` | Super administrator password | Strong password | **Yes** |
+| `GOOGLE_PLACES_API_KEY` | Google Places API key for nearby discovery *(falls back to OSM if omitted)* | `AIzaSy...` | Optional |
+| `RAZORPAY_KEY_ID` | Razorpay Merchant Key ID *(only when `PAYMENT_PROVIDER=razorpay`)* | `rzp_live_...` | Optional |
+| `RAZORPAY_KEY_SECRET` | Razorpay Secret Key | Key Secret | Optional |
+| `RAZORPAY_WEBHOOK_SECRET` | Razorpay Webhook verification secret | Secret | Optional |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary storage bucket name for user uploads | Cloud name | Optional |
+| `CLOUDINARY_API_KEY` | Cloudinary API access key | API key | Optional |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret | Secret | Optional |
+
+### Frontend (`client/user/.env`)
+
+| Variable | Description | Default / Example | Required |
+| :--- | :--- | :--- | :---: |
+| `VITE_API_BASE_URL` | Base HTTP endpoint for the backend API | `http://localhost:1234` | **Yes** |
+| `VITE_OPENFREEMAP_STYLE_URL` | OpenFreeMap vector JSON tile stylesheet URL | `https://tiles.openfreemap.org/styles/liberty` | **Yes** |
+| `VITE_RAZORPAY_KEY_ID` | Public Razorpay key ID for checkout dialogs | `rzp_test_...` | Optional |
+
+---
+
+## 🗺️ Roadmap
+
+- [x] Vector map integration using MapLibre GL JS & OpenFreeMap
+- [x] Dynamic sports venue discovery pins via OpenStreetMap Overpass API
+- [x] Atomic slot hold engine preventing double-booking race conditions
+- [x] Multi-step "Become Owner" onboarding with interactive map coordinate picker
+- [x] Modernized Admin & Owner role dashboards with venue inspection modal
+- [x] 10 unique high-resolution venue photos across all Jaipur grounds
+- [ ] Cloud production deployment to Vercel (Frontend) and Render/Railway (Backend)
+- [ ] Progressive Web App (PWA) offline ticket caching & push notifications
+- [ ] Team challenge and player matchmaking community features
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! If you would like to help improve TurfSpot:
+
+1. **Fork** the repository: `https://github.com/TechOrAlfaiz/TurfSpot/fork`
+2. **Create** your feature branch: `git checkout -b feature/AmazingFeature`
+3. **Commit** your changes: `git commit -m "feat: add some amazing feature"`
+4. **Push** to your branch: `git push origin feature/AmazingFeature`
+5. **Open** a Pull Request against `main`.
+
+---
+
+## 📄 License
+
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more details.
+
+---
+
+## 👨‍💻 Author & Contact
+
+**Mohd Alfaiz**  
+- **GitHub**: [@TechOrAlfaiz](https://github.com/TechOrAlfaiz)  
+- **Repository**: [https://github.com/TechOrAlfaiz/TurfSpot](https://github.com/TechOrAlfaiz/TurfSpot)  
+- **Email**: [mohdalfaiz1245@gmail.com](mailto:mohdalfaiz1245@gmail.com)  
